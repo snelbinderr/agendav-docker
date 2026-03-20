@@ -56,7 +56,7 @@ RUN chown -R agendav:agendav ${APACHE_LOG_DIR} && \
     && ln -sf /dev/stderr ${APACHE_LOG_DIR}/error.log \
     && ln -sf /dev/stderr ${APACHE_LOG_DIR}/davi-error.log
 
-ENV AGENDAV_PORT=8080
+ARG AGENDAV_PORT=8080
 ENV AGENDAV_SERVER_NAME=127.0.0.1
 RUN ln /app/data/config/apache2/agendav.conf /etc/apache2/sites-available/agendav.conf && \
     ln /app/data/db/ /var/agendav -s && \
@@ -67,7 +67,7 @@ RUN ln /app/data/config/apache2/agendav.conf /etc/apache2/sites-available/agenda
     a2dissite 000-default && \
     a2ensite agendav.conf && \
     a2enmod rewrite && \
-    echo Listen 127.0.0.1:${AGENDAV_PORT} > /etc/apache2/ports.conf && \
+    echo Listen ${AGENDAV_SERVER_NAME}:${AGENDAV_PORT} > /etc/apache2/ports.conf && \
     service apache2 restart && \
     service apache2 stop && \
     echo "Listen ${AGENDAV_PORT}" > /etc/apache2/ports.conf
