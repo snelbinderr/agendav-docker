@@ -10,7 +10,7 @@ services:
       - AGENDAV_FOOTER=Hosted by Example Company
       - AGENDAV_CALDAV_SERVER=https://baikal.example.com/cal.php
       - AGENDAV_CALDAV_PUBLIC_URL=https://baikal.example.com
-      - AGENDAV_TIMEZONE=UTC
+      - AGENDAV_TIMEZONE=Europe/Amsterdam
       - AGENDAV_LANG=en
       - AGENDAV_LOG_DIR=/tmp/
       - AGENDAV_WEEKSTART=1
