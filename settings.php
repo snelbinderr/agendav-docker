@@ -17,7 +17,7 @@ $app['log.path'] = 'AGENDAV_LOG_DIR';
 // Base URL
 $app['caldav.baseurl'] = 'AGENDAV_CALDAV_SERVER';
 // Authentication method required by CalDAV server (basic or digest)
-$app['caldav.authmethod'] = 'none';
+$app['caldav.authmethod'] = 'basic';
 // Whether to show public CalDAV urls
 $app['caldav.publicurls'] = true;
 // Whether to show public CalDAV urls

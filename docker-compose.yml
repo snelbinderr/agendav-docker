@@ -2,15 +2,50 @@ services:
   agendav:
     image: ghcr.io/snelbinderr/agendav-docker:latest
     container_name: agendav
+    depends_on:
+      - radicale
     environment:
       - AGENDAV_SERVER_NAME=127.0.0.1
       - AGENDAV_TITLE=Welcome to Example Agendav Server
       - AGENDAV_FOOTER=Hosted by Example Company
-      - AGENDAV_CALDAV_SERVER=https://baikal.example.com/cal.php
-      - AGENDAV_CALDAV_PUBLIC_URL=https://baikal.example.com
+      - AGENDAV_CALDAV_SERVER=http://localhost:5232/
+      - AGENDAV_CALDAV_PUBLIC_URL=http://radicale:5232
       - AGENDAV_TIMEZONE=Europe/Amsterdam
       - AGENDAV_LANG=en
       - AGENDAV_LOG_DIR=/tmp/
       - AGENDAV_WEEKSTART=1
     ports:
       - "80:8080"
+    volumes:
+      - ./tmp/agendav:/data
+  radicale:
+    image: tomsquest/docker-radicale
+    container_name: radicale
+    ports:
+      - 5232:5232
+    init: true
+    read_only: true
+    security_opt:
+      - no-new-privileges:true
+    cap_drop:
+      - ALL
+    cap_add:
+      - SETUID
+      - SETGID
+      - CHOWN
+      - KILL
+    deploy:
+      resources:
+        limits:
+          memory: 256M
+          pids: 50
+    hostname: radicale
+    healthcheck:
+      test: curl -f http://radicale:5232 || exit 1
+      interval: 30s
+      retries: 3
+    restart: unless-stopped
+    environment:
+      - RADICALE_AUTH_TYPE=none
+    volumes:
+      - /tmp/data:/data
