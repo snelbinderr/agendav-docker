@@ -27,6 +27,7 @@ RUN mkdir agendav/dist/data/src -p && \
 # Step 2: Prepare the image
 FROM php:8.2-apache-bullseye 
 WORKDIR /app/
+VOLUME /app
 COPY --from=downloader /home/agendav/dist/ .
 
 ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
